@@ -1,63 +1,43 @@
-abstract class Room {
-    String type;
-    int beds;
-    int size;
-    double price;
+import java.util.HashMap;
 
-    Room(String type, int beds, int size, double price) {
-        this.type = type;
-        this.beds = beds;
-        this.size = size;
-        this.price = price;
+class RoomInventory {
+
+    private HashMap<String, Integer> inventory;
+
+    RoomInventory() {
+        inventory = new HashMap<>();
+        inventory.put("Single Room", 10);
+        inventory.put("Double Room", 5);
+        inventory.put("Suite Room", 2);
     }
 
-    void display() {
-        System.out.println("Room Type: " + type);
-        System.out.println("Beds: " + beds);
-        System.out.println("Size: " + size + " sq.ft");
-        System.out.println("Price: $" + price);
+    int getAvailability(String roomType) {
+        return inventory.getOrDefault(roomType, 0);
     }
-}
 
-class SingleRoom extends Room {
-    SingleRoom() {
-        super("Single Room", 1, 200, 80);
+    void updateAvailability(String roomType, int count) {
+        inventory.put(roomType, count);
     }
-}
 
-class DoubleRoom extends Room {
-    DoubleRoom() {
-        super("Double Room", 2, 350, 150);
+    void displayInventory() {
+        System.out.println("===== Book My Stay - Hotel Booking System v3.1 =====");
+        for (String room : inventory.keySet()) {
+            System.out.println(room + " Available: " + inventory.get(room));
+        }
     }
 }
 
-class SuiteRoom extends Room {
-    SuiteRoom() {
-        super("Suite Room", 3, 600, 300);
-    }
-}
 public class BookMyStayApp {
+
     public static void main(String[] args) {
 
-        Room single = new SingleRoom();
-        Room dbl = new DoubleRoom();
-        Room suite = new SuiteRoom();
+        RoomInventory inventory = new RoomInventory();
 
-        int singleAvailable = 10;
-        int doubleAvailable = 5;
-        int suiteAvailable = 2;
+        inventory.displayInventory();
 
-        System.out.println("===== Book My Stay - Hotel Booking System v2.1 =====");
+        inventory.updateAvailability("Single Room", 8);
 
-        single.display();
-        System.out.println("Available: " + singleAvailable);
-        System.out.println();
-
-        dbl.display();
-        System.out.println("Available: " + doubleAvailable);
-        System.out.println();
-
-        suite.display();
-        System.out.println("Available: " + suiteAvailable);
+        System.out.println("\nUpdated Availability:");
+        inventory.displayInventory();
     }
 }
